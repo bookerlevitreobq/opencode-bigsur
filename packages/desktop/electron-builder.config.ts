@@ -22,7 +22,7 @@ async function signWindows(configuration: { path: string }) {
 
 const channel = (() => {
   const raw = process.env.OPENCODE_CHANNEL
-  if (raw === "dev" || raw === "beta" || raw === "prod") return raw
+  if (raw === "dev" || raw === "beta" || raw === "prod" || raw === "bigsur") return raw
   return "dev"
 })()
 
@@ -43,6 +43,7 @@ const getBase = (): Configuration => ({
   mac: {
     category: "public.app-category.developer-tools",
     icon: `resources/icons/icon.icns`,
+    minimumSystemVersion: "11.0",
     hardenedRuntime: true,
     gatekeeperAssess: false,
     entitlements: "resources/entitlements.plist",
@@ -98,6 +99,24 @@ function getConfig() {
         protocols: { name: "OpenCode Beta", schemes: ["opencode"] },
         publish: { provider: "github", owner: "anomalyco", repo: "opencode-beta", channel: "latest" },
         rpm: { packageName: "opencode-beta" },
+      }
+    }
+    case "bigsur": {
+      return {
+        ...base,
+        appId: "ai.opencode.desktop.dev",
+        productName: "OpenCode Big Sur",
+        mac: {
+          ...base.mac,
+          hardenedRuntime: false,
+          notarize: false,
+          entitlements: undefined,
+          entitlementsInherit: undefined,
+        },
+        dmg: {
+          sign: false,
+        },
+        publish: undefined,
       }
     }
     case "prod": {
