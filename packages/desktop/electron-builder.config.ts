@@ -116,6 +116,7 @@ function getConfig() {
         dmg: {
           sign: false,
         },
+        npmRebuild: true,
         publish: undefined,
       }
     }
